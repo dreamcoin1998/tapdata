@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: bash build/build.sh -c iengine
+      run: bash build/quick-test.sh
