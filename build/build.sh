@@ -7,6 +7,8 @@ sourcepath=$(cd `dirname $0`/../; pwd)
 echo $CR_PAT | docker login ghcr.io -u $USERNAME --password-stdin
 
 echo "成功"
+echo $CR_PAT
+echo $USERNAME
 
 ulimit -c unlimited
 
