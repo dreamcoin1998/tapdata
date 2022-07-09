@@ -6,8 +6,6 @@ sourcepath=$(cd `dirname $0`/../; pwd)
 
 echo $CR_PAT | docker login ghcr.io -u $USERNAME --password-stdin
 
-echo $USERNAME
-
 ulimit -c unlimited
 
 if [[ $tapdata_build_env == "docker" && $_in_docker == "" ]]; then
