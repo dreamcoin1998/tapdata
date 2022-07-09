@@ -15,7 +15,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: run end2end test
-      - shell: bash
-        env: 
-            super_secret: ${{ secrets.CR_PAT }}
       - run: build/quick-test.sh
