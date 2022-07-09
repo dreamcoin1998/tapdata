@@ -8,15 +8,28 @@ on:
 
 jobs:
 
-  build:
-
+  unittest:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - name: run end2end test
+        run: ls -al
+
+  integration_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: run integration test
         env:
           CR_PAT: ${{ secrets.CR_PAT }}
           USERNAME: ${{ secrets.USERNAME }}
         run: chmod u+x build/quick-test.sh && build/quick-test.sh
              exit $?
+ 
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [unittest, integration_test]
+    steps:
+      - uses: actions/checkout@v3
+      - name: build and publish image
+        run: ls -al
