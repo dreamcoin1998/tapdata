@@ -18,4 +18,4 @@ jobs:
         env:
           CR_PAT: ${{ secrets.CR_PAT }}
           USERNAME: ${{ secrets.USERNAME }}
-        run: build/quick-test.sh
+        run: chmod u+x build/quick-test.sh && build/quick-test.sh
