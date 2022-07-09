@@ -4,7 +4,7 @@ sourcepath=$(cd `dirname $0`/../; pwd)
 . $basepath/log.sh
 . $basepath/env.sh
 
-echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
+echo $CR_PAT | docker login ghcr.io -u $USERNAME --password-stdin
 
 ulimit -c unlimited
 
