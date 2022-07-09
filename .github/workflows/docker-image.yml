@@ -18,4 +18,4 @@ jobs:
     - shell: bash
       env: 
           super_secret: ${{ secrets.CR_PAT }}
-      run: build/quick-test.sh
+    - run: build/quick-test.sh
