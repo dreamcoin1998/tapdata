@@ -8,13 +8,13 @@ export database_mem="0.3"
 export manager_mem="0.2"
 export iengine_mem="0.2"
 
-export docker_registry="ghcr.io/tapdata/tapdata/tldp/"
+export docker_registry="ghcr.io/dreamcoin1998/tapdata/tldp/"
 export docker_build="build:0.1"
 export docker_runtime="runtime:0.1"
 export docker_all_in_one="all-in-one:0.1"
 export dev_container_name="tapdata-all-in-one"
 export use_container_name="tapdata-all-in-one-use"
-export tapdata_build_image="ghcr.io/tapdata/tapdata/tldp/build:0.1"
+export tapdata_build_image="ghcr.io/dreamcoin1998/tapdata/tldp/build:0.1"
 export LC_ALL=en_US.UTF-8
 export _in_docker=""
 if [[ -f "/.dockerenv" ]]; then
