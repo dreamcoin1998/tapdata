@@ -22,7 +22,7 @@ wait_do_something() {
         for id in "${!array[@]}";
         do
             element=$array[$id]
-            ! test -f /var/run/$element && test -f /var/log/$element.log
+            ! test -f /var/run/$element && test -f /tmp/$element.log
             if [[ $? -eq 0 ]]; then
                 info "this is $element pull log"
                 cat /var/log/$element.log
@@ -41,6 +41,8 @@ sudo nohup bash ./pre.sh -m $docker_all_in_one -t "image" &> /tmp/$docker_all_in
 image_list=( $docker_build $docker_runtime $docker_all_in_one )
 
 wait_do_something $image_list 300
+
+echo "stop pull images..."
 
 if [[ $force -eq 1 ]]; then
     docker rm -f $dev_container_name
