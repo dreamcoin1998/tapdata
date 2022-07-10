@@ -44,6 +44,11 @@ wait_do_something() {
 }
 
 echo "start pull images..."
+
+touch /tmp/$docker_build.log
+touch /tmp/$docker_runtime.log
+touch /tmp/$docker_all_in_one.log
+
 sudo nohup bash ./pre.sh -m $docker_build -t "image" &> /tmp/$docker_build.log &
 sudo nohup bash ./pre.sh -m $docker_runtime -t "image" &> /tmp/$docker_runtime.log &
 sudo nohup bash ./pre.sh -m $docker_all_in_one -t "image" &> /tmp/$docker_all_in_one.log &
