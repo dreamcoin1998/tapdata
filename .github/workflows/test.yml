@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: touch /var/tun/build:0.1
+      run: touch /var/run/build:0.1
   
   check_file:
 
@@ -24,7 +24,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: ls -al /var/tun/build:0.1
+      run: ls -al /var/run/build:0.1
   
   delete_file:
 
@@ -33,4 +33,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: rm /var/tun/build:0.1
+      run: rm /var/run/build:0.1
