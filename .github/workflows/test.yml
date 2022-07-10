@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: touch /var/run/build:0.1
+      run: sudo touch /var/run/build:0.1
   
   check_file:
 
