@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: run end2end test
-        run: ls -al
+        run: id
 
   integration_test:
     runs-on: ubuntu-latest
