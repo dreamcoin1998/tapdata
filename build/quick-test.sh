@@ -1,7 +1,6 @@
 #!/bin/bash
-. $basepath/env.sh
 basepath=$(cd `dirname $0`; pwd)
-sourcepath=$(cd `dirname $0`/../; pwd)
+. $basepath/env.sh
 cd $basepath
 
 bash build/build.sh -p 1 -o image
