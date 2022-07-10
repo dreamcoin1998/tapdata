@@ -66,12 +66,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: run integration test
-        with: 
-          name: dist
-      - shell: bash
         env:
           CR_PAT: ${{ secrets.CR_PAT }}
           USERNAME: ${{ secrets.USERNAME }}
+        with: 
+          name: dist
+      - shell: bash
         run: chmod u+x build/quick-test.sh && bash build/quick-test.sh
              exit $?
  
