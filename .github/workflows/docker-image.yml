@@ -13,6 +13,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - shell: bash
+        env:
+          CR_PAT: ${{ secrets.CR_PAT }}
+          USERNAME: ${{ secrets.USERNAME }}
         run: chmod u+x ./build/build.sh && ./build/build.sh -c iengine
              exit $?
       - name: compire iengine
@@ -26,6 +29,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - shell: bash
+        env:
+          CR_PAT: ${{ secrets.CR_PAT }}
+          USERNAME: ${{ secrets.USERNAME }}
         run: chmod u+x ./build/build.sh && ./build/build.sh -c manager
              exit $?
       - name: compire manager
@@ -39,6 +45,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - shell: bash
+        env:
+          CR_PAT: ${{ secrets.CR_PAT }}
+          USERNAME: ${{ secrets.USERNAME }}
         run: chmod u+x ./build/build.sh && ./build/build.sh -c plugin-kit
              exit $?
       - name: compire plugin-kit
@@ -52,6 +61,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - shell: bash
+        env:
+          CR_PAT: ${{ secrets.CR_PAT }}
+          USERNAME: ${{ secrets.USERNAME }}
         run: chmod u+x ./build/build.sh && ./build/build.sh -c connectors
              exit $?
       - name: compire connectors
