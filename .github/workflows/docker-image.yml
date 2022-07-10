@@ -86,12 +86,14 @@ jobs:
     steps:
     - name: run integration test
       uses: actions/checkout@v3
+    - uses: actions/download-artifact@v3
       with:
         name: dist
+    - shell: bash
       env:
         CR_PAT: ${{ secrets.CR_PAT }}
         USERNAME: ${{ secrets.USERNAME }}
-    - run: chmod u+x build/quick-test.sh && bash build/quick-test.sh
+      run: chmod u+x ./build/quick-test.sh && bash ./build/quick-test.sh
            exit $?
  
   deploy:
