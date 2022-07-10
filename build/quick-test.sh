@@ -34,13 +34,13 @@ wait_do_something() {
 }
 
 echo "start pull images..."
-nohup bash ./pre.sh -m $docker_build -t "image" &> /var/log/$docker_build.log &
-nohup bash ./pre.sh -m $docker_runtime -t "image" &> /var/log/$docker_runtime.log &
-nohup bash ./pre.sh -m $docker_all_in_one -t "image" &> /var/log/$docker_all_in_one.log &
+sudo nohup bash ./pre.sh -m $docker_build -t "image" &> /var/log/$docker_build.log &
+sudo nohup bash ./pre.sh -m $docker_runtime -t "image" &> /var/log/$docker_runtime.log &
+sudo nohup bash ./pre.sh -m $docker_all_in_one -t "image" &> /var/log/$docker_all_in_one.log &
 
 image_list=( $docker_build $docker_runtime $docker_all_in_one )
 
-wait_do_something $image_list 600
+wait_do_something $image_list 300
 
 if [[ $force -eq 1 ]]; then
     docker rm -f $dev_container_name
@@ -52,14 +52,14 @@ if [[ $? -ne 0 ]]; then
     tag=`cat image/tag`
     x=`docker images $tag|wc -l`
     if [[ $x -eq 1 ]]; then
-        nohup bash ./pre.sh -m iengine -t "compire" &> /var/log/iengine.log &
-        nohup bash ./pre.sh -m manager -t "compire" &> /var/log/manager.log &
-        nohup bash ./pre.sh -m plugin-kit -t "compire" &> /var/log/plugin-kit.log &
-        nohup bash ./pre.sh -m connectors -t "compire" &> /var/log/connectors.log &
-        
+        sudo nohup bash ./pre.sh -m iengine -t "compire" &> /var/log/iengine.log &
+        sudo nohup bash ./pre.sh -m manager -t "compire" &> /var/log/manager.log &
+        sudo nohup bash ./pre.sh -m plugin-kit -t "compire" &> /var/log/plugin-kit.log &
+        sudo nohup bash ./pre.sh -m connectors -t "compire" &> /var/log/connectors.log &
+
         module_list=("iengine" "manager" "plugin-kit" "connectors")
 
-        wait_do_something $module_list 600
+        wait_do_something $module_list 300
 
         cd ../
         bash build/build.sh -p 1 -o image
