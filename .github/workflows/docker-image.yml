@@ -7,8 +7,54 @@ on:
     branches: [ "master" ]
 
 jobs:
+
+  build_iengine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - shell: bash
+        run: ./build/build.sh -c iengine
+      - name: compire iengine
+        with:
+          name: dist
+          path: ./iengine/dist
+
+  build_manager:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - shell: bash
+        run: ./build/build.sh -c manager
+      - name: compire manager
+        with:
+          name: dist
+          path: ./manager/dist
+
+  build_plugin-kit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - shell: bash
+        run: ./build/build.sh -c plugin-kit
+      - name: compire plugin-kit
+        with:
+          name: dist
+          path: ./plugin-kit/dist
+
+  build_connectors:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - shell: bash
+        run: ./build/build.sh -c connectors
+      - name: compire connectors
+        with:
+          name: dist
+          path: ./connectors/dist
+
   unittest:
     runs-on: ubuntu-latest
+    needs: [build_iengine, build_manager, build_connectors, build_plugin-kit]
     steps:
       - uses: actions/checkout@v3
       - name: run unittest test
@@ -16,15 +62,16 @@ jobs:
 
   integration_test:
     runs-on: ubuntu-latest
+    needs: [build_iengine, build_manager, build_connectors, build_plugin-kit]
     steps:
       - uses: actions/checkout@v3
       - name: run integration test
+        with:
+          name: dist
+      - shell: bash
         env:
           CR_PAT: ${{ secrets.CR_PAT }}
           USERNAME: ${{ secrets.USERNAME }}
-        with: 
-          name: dist
-      - shell: bash
         run: chmod u+x build/quick-test.sh && bash build/quick-test.sh
              exit $?
  
