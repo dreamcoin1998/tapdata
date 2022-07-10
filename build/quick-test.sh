@@ -53,9 +53,9 @@ if [[ $? -ne 0 ]]; then
     x=`docker images $tag|wc -l`
     if [[ $x -eq 1 ]]; then
         nohup bash ./pre.sh -m iengine -t "compire" &> /var/log/iengine.log &
-        nohup bash ./pre.sh -m manager -t "compire" &> /var/log/iengine.log &
-        nohup bash ./pre.sh -m plugin-kit -t "compire" &> /var/log/iengine.log &
-        nohup bash ./pre.sh -m connectors -t "compire" &> /var/log/iengine.log &
+        nohup bash ./pre.sh -m manager -t "compire" &> /var/log/manager.log &
+        nohup bash ./pre.sh -m plugin-kit -t "compire" &> /var/log/plugin-kit.log &
+        nohup bash ./pre.sh -m connectors -t "compire" &> /var/log/connectors.log &
         
         module_list=("iengine" "manager" "plugin-kit" "connectors")
 
