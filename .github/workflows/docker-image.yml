@@ -62,21 +62,24 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: create floder
-        run: mkdir -p dist/iengine dist/manager dist/plugin-kit dist/connectors
+        run: mkdir -p iengine/dist manager/dist connectorsdist
       - name: download iengine package
         uses: actions/download-artifact@v3
         with:
           name: iengine
-          path: dist/iengine/
+          path: iengine/dist
       - name: download manager package
         uses: actions/download-artifact@v3
         with:
           name: manager
-          path: dist/manager/
+          path: manager/dist
       - name: download connectors package
         uses: actions/download-artifact@v3
         with:
           name: connectors
-          path: dist/connectors/
+          path: connectors/dist
       - name: run integrate test
-        run: ls -al
+        run: chmod u+x build/quick-test.sh
+             bash build/quick-test.sh
+             exit $?
+             
