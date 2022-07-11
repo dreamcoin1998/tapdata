@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: build_engine
-      - shell: bash
+        shell: bash
         run: chmod u+x build/build.sh && build/build.sh -c iengine
       - name: upload iengine package
         uses: actions/upload-artifact@v3
@@ -31,7 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: build_manager
-      - shell: bash
+        shell: bash
         run: chmod u+x build/build.sh && build/build.sh -c manager
       - name: upload manager package
         uses: actions/upload-artifact@v3
@@ -44,7 +44,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: build_plugin-kit
-      - shell: bash
+        shell: bash
         run: chmod u+x build/build.sh && build/build.sh -c plugin-kit
       - name: upload plugin-kit package
         uses: actions/upload-artifact@v3
@@ -57,7 +57,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: build_engine
-      - shell: bash
+        shell: bash
         run: chmod u+x build/build.sh && build/build.sh -c connectors
       - name: upload connectors package
         uses: actions/upload-artifact@v3
