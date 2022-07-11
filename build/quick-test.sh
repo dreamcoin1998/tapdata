@@ -26,19 +26,17 @@ wait_run() {
   cd $sourcepath
   for i in $(seq 1 300); do
     is_ok=0
-    for m in "$*"; do
-      echo $m
-      echo $m.log
+    for m in $*; do
       if [[ -f $m.log && ! -f $m.run ]]; then
         continue
       else
-        tail -n -1 $sourcepath/$m.log
+        tail -1 $sourcepath/$m.log
         is_ok=1
         break
       fi
     done
     if [[ $is_ok -eq 0 ]]; then
-      for m in "$*"; do
+      for m in $*; do
         echo "this is total $m.log"
         cat $sourcepath/$m.log
       done
@@ -61,7 +59,7 @@ if [[ $? -ne 0 ]]; then
         nohup bash ./pre.sh -t compile -m manager &> $sourcepath/manager.log &
         nohup bash ./pre.sh -t compile -m plugin-kit &> $sourcepath/plugin-kit.log &
         nohup bash ./pre.sh -t compile -m connectors &> $sourcepath/connectors.log &
-        
+
         wait_run iengine manager plugin-kit connectors
 
         wait_run
