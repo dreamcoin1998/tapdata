@@ -39,19 +39,6 @@ jobs:
           name: manager
           path: manager/dist/*
 
-  build_plugin_kit:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: build_plugin-kit
-        shell: bash
-        run: chmod u+x build/build.sh && build/build.sh -c plugin-kit
-      - name: upload plugin-kit package
-        uses: actions/upload-artifact@v3
-        with:
-          name: plugin_kit
-          path: plugin-kit/dist/*
-
   build_connectors:
     runs-on: ubuntu-latest
     steps:
@@ -71,7 +58,6 @@ jobs:
     needs:
       - build_iengine
       - build_manager
-      - build_plugin_kit
       - build_connectors
     steps:
       - uses: actions/checkout@v3
@@ -87,11 +73,6 @@ jobs:
         with:
           name: manager
           path: dist/manager/
-      - name: download plugin_kit package
-        uses: actions/download-artifact@v3
-        with:
-          name: plugin_kit
-          path: dist/plugin-kit/
       - name: download connectors package
         uses: actions/download-artifact@v3
         with:
