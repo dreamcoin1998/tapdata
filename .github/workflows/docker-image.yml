@@ -9,7 +9,6 @@ on:
 env:
   CR_PAT: ${{ secrets.CR_PAT }}
   USERNAME: ${{ secrets.USERNAME }}
-  TEST_DATABASE: ${{ secrets.TEST_DATABASE }}
 
 jobs:
 
@@ -20,5 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: run end2end test
+        env: 
+          TEST_DATABASE: ${{ secrets.TEST_DATABASE }}
         run: chmod u+x build/quick-test.sh && build/quick-test.sh
              exit $?
