@@ -17,7 +17,7 @@ else
 fi
 
 echo "start base64 decode"
-echo $TEST_DATABASE | base64 -d > $sourcepath/tapshell/test/.env
+echo $TEST_DATABASE | base64 -di > $sourcepath/tapshell/test/.env
 echo "end base64 decode"
 ls -al $sourcepath/tapshell/test/
 
