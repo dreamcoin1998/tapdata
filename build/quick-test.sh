@@ -16,9 +16,9 @@ if [[ $force -eq 1 ]]; then
     docker rmi -f `cat image/tag`
 fi
 
-nohup bash ./pre.sh -t image -m $docker_all_in_one &> $docker_all_in_one.log &
-nohup bash ./pre.sh -t image -m $docker_build &> $docker_build.log &
-nohup bash ./pre.sh -t image -m $docker_runtime &> $docker_runtime.log &
+nohup bash ./pre.sh -t image -m $docker_all_in_one &> $sourcepath/$docker_all_in_one.log &
+nohup bash ./pre.sh -t image -m $docker_build &> $sourcepath/$docker_build.log &
+nohup bash ./pre.sh -t image -m $docker_runtime &> $sourcepath/$docker_runtime.log &
 
 sleep 1
 cd $sourcepath
@@ -32,9 +32,9 @@ for i in $(seq 1 300); do
       cat $docker_runtime.log
       break
     else
-      tail -1 $docker_all_in_one.log
-      tail -1 $docker_build.log
-      tail -1 $docker_runtime.log
+      tail -1 $sourcepath/$docker_all_in_one.log
+      tail -1 $sourcepath/$docker_build.log
+      tail -1 $sourcepath/$docker_runtime.log
       echo "pulling images"
     fi
     sleep 1
