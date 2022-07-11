@@ -62,8 +62,6 @@ if [[ $? -ne 0 ]]; then
 
         wait_run iengine manager plugin-kit connectors
 
-        wait_run
-
         bash build/build.sh -p 1 -o image
     fi
     cd $basepath
