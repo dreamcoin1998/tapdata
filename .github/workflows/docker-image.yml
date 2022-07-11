@@ -6,81 +6,18 @@ on:
   pull_request:
     branches: [ "master" ]
 
-env:
-  CR_PAT: ${{ secrets.CR_PAT }}
-  USERNAME: ${{ secrets.USERNAME }}
-  TEST_DATABASE: ${{ secrets.TEST_DATABASE }}
-
 jobs:
 
-  build_iengine:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: build_engine
-        shell: bash
-        run: chmod u+x build/build.sh && build/build.sh -c iengine
-      - name: list dist floder
-        run: ls -al iengine/dist
-      - name: upload iengine package
-        uses: actions/upload-artifact@v3
-        with:
-          name: iengine
-          path: iengine/dist/*
-
-  build_manager:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: build_manager
-        shell: bash
-        run: chmod u+x build/build.sh && build/build.sh -c manager
-      - name: upload manager package
-        uses: actions/upload-artifact@v3
-        with:
-          name: manager
-          path: manager/dist/*
-
-  build_connectors:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: build_engine
-        shell: bash
-        run: chmod u+x build/build.sh && build/build.sh -c connectors
-      - name: upload connectors package
-        uses: actions/upload-artifact@v3
-        with:
-          name: connectors
-          path: connectors/dist/*
-
-  integrate_test:
+  test:
 
     runs-on: ubuntu-latest
-    needs:
-      - build_iengine
-      - build_manager
-      - build_connectors
+
     steps:
       - uses: actions/checkout@v3
-      - name: create floder
-        run: mkdir -p iengine/dist manager/dist connectorsdist
-      - name: download iengine package
-        uses: actions/download-artifact@v3
-        with:
-          name: iengine
-          path: iengine/dist
-      - name: download manager package
-        uses: actions/download-artifact@v3
-        with:
-          name: manager
-          path: manager/dist
-      - name: download connectors package
-        uses: actions/download-artifact@v3
-        with:
-          name: connectors
-          path: connectors/dist
-      - name: run integrate test
-        run: chmod u+x build/quick-test.sh && bash build/quick-test.sh
+      - name: run end2end test
+        env:
+          CR_PAT: ${{ secrets.CR_PAT }}
+          USERNAME: ${{ secrets.USERNAME }}
+          TEST_DATABASE: ${{ env.TEST_DATABASE }}
+        run: chmod u+x build/quick-test.sh && build/quick-test.sh
              exit $?
-             
