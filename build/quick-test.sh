@@ -10,6 +10,12 @@ basepath=$(cd `dirname $0`; pwd)
 sourcepath=$(cd `dirname $0`/../; pwd)
 cd $basepath
 
+if [[ $TEST_DATABASE ]]; then
+    echo "存在"
+else
+    echo "不存在"
+fi
+
 echo "start base64 decode"
 echo $TEST_DATABASE | base64 -d > $sourcepath/tapshell/test/.env
 echo "end base64 decode"
