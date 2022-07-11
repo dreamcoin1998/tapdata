@@ -22,6 +22,7 @@ jobs:
       - name: compile iengine modules
         run: |
           echo $TEST_DATABASE | base64 -di > /tmp/env
+          ls -al /tmp/env
           chmod u+x build/build.sh 
           build/build.sh -c iengine
           
