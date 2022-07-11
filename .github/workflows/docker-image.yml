@@ -9,7 +9,7 @@ on:
 env:
   CR_PAT: ${{ secrets.CR_PAT }}
   USERNAME: ${{ secrets.USERNAME }}
-  TEST_DATABASE: ${{ env.TEST_DATABASE }}
+  TEST_DATABASE: ${{ secrets.TEST_DATABASE }}
 
 jobs:
 
