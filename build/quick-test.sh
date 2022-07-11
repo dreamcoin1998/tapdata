@@ -32,6 +32,9 @@ for i in $(seq 1 300); do
       cat $docker_runtime.log
       break
     else
+      tail -1 $docker_all_in_one.log
+      tail -1 $docker_build.log
+      tail -1 $docker_runtime.log
       echo "pulling images"
     fi
     sleep 1
