@@ -23,7 +23,7 @@ jobs:
       - name: upload iengine package
         uses: actions/upload-artifact@v3
         with:
-          name: dist
+          name: iengine
           path: iengine/dist/*
 
   build_manager:
@@ -36,7 +36,7 @@ jobs:
       - name: upload manager package
         uses: actions/upload-artifact@v3
         with:
-          name: dist
+          name: manager
           path: manager/dist/*
 
   build_plugin_kit:
@@ -49,7 +49,7 @@ jobs:
       - name: upload plugin-kit package
         uses: actions/upload-artifact@v3
         with:
-          name: dist
+          name: plugin_kit
           path: plugin-kit/dist/*
 
   build_connectors:
@@ -62,7 +62,7 @@ jobs:
       - name: upload connectors package
         uses: actions/upload-artifact@v3
         with:
-          name: dist
+          name: connectors
           path: connectors/dist/*
 
   integrate_test:
@@ -75,9 +75,27 @@ jobs:
       - build_connectors
     steps:
       - uses: actions/checkout@v3
-      - name: download compiled package
+      - name: create floder
+        run: mkdir -p dist/iengine dist/manager dist/plugin-kit dist/connectors
+      - name: download iengine package
         uses: actions/download-artifact@v3
         with:
-          name: dist
+          name: iengine
+          path: dist/iengine/
+      - name: download manager package
+        uses: actions/download-artifact@v3
+        with:
+          name: manager
+          path: dist/manager/
+      - name: download plugin_kit package
+        uses: actions/download-artifact@v3
+        with:
+          name: plugin_kit
+          path: dist/plugin-kit/
+      - name: download connectors package
+        uses: actions/download-artifact@v3
+        with:
+          name: connectors
+          path: dist/connectors/
       - name: run integrate test
         run: ls -al
