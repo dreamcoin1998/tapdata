@@ -38,6 +38,7 @@ run_compile() {
 }
 
 run_docker_pull() {
+  echo $CR_PAT | docker login ghcr.io -u $USERNAME --password-stdin
   cd $basepath
   echo "run docker pull $module"
   chmod u+x build.sh
