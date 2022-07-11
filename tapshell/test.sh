@@ -19,6 +19,7 @@ fi
 test -f $basepath/test/.env
 if [[ $? -ne 0 ]]; then
     echo $TEST_DATABASE > $basepath/test/.env
+    cat $basepath/test/.env
 fi
 
 for i in $(seq 1 30); do
