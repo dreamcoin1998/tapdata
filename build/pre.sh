@@ -27,7 +27,7 @@ create_tag() {
 
 delete_tag() {
   echo "delete $module run tag $module.run"
-  touch $module.run
+  rm $module.run
 }
 
 run_compile() {
