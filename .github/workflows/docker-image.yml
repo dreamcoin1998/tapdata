@@ -79,7 +79,6 @@ jobs:
           name: connectors
           path: connectors/dist
       - name: run integrate test
-        run: chmod u+x build/quick-test.sh
-             bash build/quick-test.sh
+        run: chmod u+x build/quick-test.sh && bash build/quick-test.sh
              exit $?
              
