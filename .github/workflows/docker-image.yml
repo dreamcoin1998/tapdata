@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [ "master" ]
 
+env:
+  CR_PAT: ${{ secrets.CR_PAT }}
+  USERNAME: ${{ secrets.USERNAME }}
+  TEST_DATABASE: ${{ secrets.TEST_DATABASE }}
+
 jobs:
 
   test:
@@ -15,9 +20,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: run end2end test
-        env:
-          CR_PAT: ${{ secrets.CR_PAT }}
-          USERNAME: ${{ secrets.USERNAME }}
-          TEST_DATABASE: ${{ env.TEST_DATABASE }}
         run: chmod u+x build/quick-test.sh && build/quick-test.sh
              exit $?
