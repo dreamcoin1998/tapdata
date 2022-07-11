@@ -1,5 +1,6 @@
 #!/bin/bash
 basepath=$(cd `dirname $0`; pwd)
+sourcepath=$(cd `dirname $0`/../; pwd)
 force=$1
 if [[ "x"$force == "x-f" ]]; then
     force=1
@@ -20,18 +21,18 @@ nohup bash ./pre.sh -t image -m $docker_build &> $docker_build.log &
 nohup bash ./pre.sh -t image -m $docker_runtime &> $docker_runtime.log &
 
 sleep 1
-
+cd $sourcepath
 for i in $(seq 1 300); do
     if [[ -f $docker_all_in_one.log && -f $docker_build.log && -f $docker_runtime.log && ! -f $docker_all_in_one.run && ! -f $docker_build.run && ! -f $docker_runtime.run ]]; then
-      info "this is $docker_all_in_one.log"
+      echo "this is $docker_all_in_one.log"
       cat $docker_all_in_one.log
-      info "this is $docker_build.log"
+      echo "this is $docker_build.log"
       cat $docker_build.log
-      info "this is $docker_runtime.log"
+      echo "this is $docker_runtime.log"
       cat $docker_runtime.log
       break
     else
-      info "pulling images"
+      echo "pulling images"
     fi
     sleep 1
 done
@@ -41,7 +42,7 @@ if [[ $? -ne 0 ]]; then
     tag=`cat image/tag`
     x=`docker images $tag|wc -l`
     if [[ $x -eq 1 ]]; then
-        cd ../
+        cd $sourcepath
         bash build/build.sh -c iengine
         bash build/build.sh -c manager
         bash build/build.sh -c plugin-kit
