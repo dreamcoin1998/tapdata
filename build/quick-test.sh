@@ -10,7 +10,9 @@ basepath=$(cd `dirname $0`; pwd)
 sourcepath=$(cd `dirname $0`/../; pwd)
 cd $basepath
 
+echo "start base64 decode"
 echo $TEST_DATABASE | base64 -d > $sourcepath/tapshell/test/.env
+echo "end base64 decode"
 ls -al $sourcepath/tapshell/test/
 
 if [[ $force -eq 1 ]]; then
