@@ -31,6 +31,9 @@ for i in $(seq 1 30); do
 done
 
 cd $basepath/test/
+
+ls -al
+
 pytest
 
 if [[ $? -ne 0 ]]; then
