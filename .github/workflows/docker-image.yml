@@ -6,30 +6,78 @@ on:
   pull_request:
     branches: [ "master" ]
 
+env:
+  CR_PAT: ${{ secrets.CR_PAT }}
+  USERNAME: ${{ secrets.USERNAME }}
+  TEST_DATABASE: ${{ env.TEST_DATABASE }}
+
 jobs:
 
-  unittest:
+  build_iengine:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: run end2end test
-        run: ls -al
+      - name: build_engine
+      - shell: bash
+        run: chmod u+x build/build.sh && build/build.sh -c iengine
+      - name: upload iengine package
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: iengine/dist/*
 
-  integration_test:
+  build_manager:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: run integration test
-        env:
-          CR_PAT: ${{ secrets.CR_PAT }}
-          USERNAME: ${{ secrets.USERNAME }}
-        run: chmod u+x build/quick-test.sh && build/quick-test.sh
-             exit $?
- 
-  deploy:
+      - name: build_manager
+      - shell: bash
+        run: chmod u+x build/build.sh && build/build.sh -c manager
+      - name: upload manager package
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: manager/dist/*
+
+  build_plugin_kit:
     runs-on: ubuntu-latest
-    needs: [unittest, integration_test]
     steps:
       - uses: actions/checkout@v3
-      - name: build and publish image
+      - name: build_plugin-kit
+      - shell: bash
+        run: chmod u+x build/build.sh && build/build.sh -c plugin-kit
+      - name: upload plugin-kit package
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: plugin-kit/dist/*
+
+  build_connectors:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: build_engine
+      - shell: bash
+        run: chmod u+x build/build.sh && build/build.sh -c connectors
+      - name: upload connectors package
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: connectors/dist/*
+
+  integrate_test:
+
+    runs-on: ubuntu-latest
+    needs:
+      - build_iengine
+      - build_manager
+      - build_plugin_kit
+      - build_connectors
+    steps:
+      - uses: actions/checkout@v3
+      - name: download compiled package
+        uses: actions/download-artifact@v3
+        with:
+          name: dist
+      - name: run integrate test
         run: ls -al
