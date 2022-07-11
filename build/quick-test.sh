@@ -21,24 +21,33 @@ nohup bash ./pre.sh -t image -m $docker_build &> $sourcepath/$docker_build.log &
 nohup bash ./pre.sh -t image -m $docker_runtime &> $sourcepath/$docker_runtime.log &
 
 sleep 1
-cd $sourcepath
-for i in $(seq 1 300); do
-    if [[ -f $docker_all_in_one.log && -f $docker_build.log && -f $docker_runtime.log && ! -f $docker_all_in_one.run && ! -f $docker_build.run && ! -f $docker_runtime.run ]]; then
-      echo "this is $docker_all_in_one.log"
-      cat $docker_all_in_one.log
-      echo "this is $docker_build.log"
-      cat $docker_build.log
-      echo "this is $docker_runtime.log"
-      cat $docker_runtime.log
+
+wait_run() {
+  cd $sourcepath
+  for i in $(seq 1 300); do
+    is_ok=0
+    for m in "$*"; do
+      if [[ -f $m.log && ! -f $m.run ]]; then
+        continue
+      else
+        line_log=`tail -1 $m.log`
+        echo "line log belong to: $line_log"
+        is_ok=1
+        break
+      fi
+    done
+    if [[ $is_ok -eq 0 ]]; then
+      for m in "$*"; do
+        echo "this is total $m.log"
+        cat $sourcepath/$m.log
+      done
       break
-    else
-      tail -1 $sourcepath/$docker_all_in_one.log
-      tail -1 $sourcepath/$docker_build.log
-      tail -1 $sourcepath/$docker_runtime.log
-      echo "pulling images"
     fi
     sleep 1
-done
+  done
+}
+
+wait_run $docker_all_in_one $docker_build $docker_runtime
 
 docker ps|grep $dev_container_name &> /dev/null
 if [[ $? -ne 0 ]]; then
@@ -46,10 +55,16 @@ if [[ $? -ne 0 ]]; then
     x=`docker images $tag|wc -l`
     if [[ $x -eq 1 ]]; then
         cd $sourcepath
-        bash build/build.sh -c iengine
-        bash build/build.sh -c manager
-        bash build/build.sh -c plugin-kit
-        bash build/build.sh -c connectors
+
+        nohup bash ./pre.sh -t compile -m iengine &> $sourcepath/iengine.log &
+        nohup bash ./pre.sh -t compile -m manager &> $sourcepath/manager.log &
+        nohup bash ./pre.sh -t compile -m plugin-kit &> $sourcepath/plugin-kit.log &
+        nohup bash ./pre.sh -t compile -m connectors &> $sourcepath/connectors.log &
+        
+        wait_run iengine manager plugin-kit connectors
+
+        wait_run
+
         bash build/build.sh -p 1 -o image
     fi
     cd $basepath
