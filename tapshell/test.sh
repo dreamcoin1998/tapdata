@@ -34,6 +34,12 @@ cd $basepath/test/
 
 ls -al
 
+if [[ $TEST_DATABASE ]]; then
+    echo "TEST_DATABASE exists"
+else
+    echo "TEST_DATABASE not exists"
+fi
+
 pytest
 
 if [[ $? -ne 0 ]]; then
