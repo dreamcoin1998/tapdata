@@ -27,6 +27,8 @@ wait_run() {
   for i in $(seq 1 300); do
     is_ok=0
     for m in "$*"; do
+      echo $m
+      echo $m.log
       if [[ -f $m.log && ! -f $m.run ]]; then
         continue
       else
