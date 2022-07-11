@@ -9,6 +9,7 @@ on:
 env:
   CR_PAT: ${{ secrets.CR_PAT }}
   USERNAME: ${{ secrets.USERNAME }}
+  TEST_DATABASE: ${{ secrets.TEST_DATABASE }}
 
 jobs:
 
@@ -18,8 +19,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: run end2end test
-        env: 
-          TEST_DATABASE: ${{ secrets.TEST_DATABASE }}
+      - name: compile modules
+        run: |
+          chmod u+x build/build.sh 
+          build/build.sh -c iengine
+          build/build.sh -c manager
+          build/build.sh -c plugin-kit
+          build/build.sh -c connectors
+      - name: package module
+        run: build/build.sh -p 1 -o image
+      - name: run unittest
+        run: ls -al
+      - name: run integrate test
         run: chmod u+x build/quick-test.sh && build/quick-test.sh
              exit $?
