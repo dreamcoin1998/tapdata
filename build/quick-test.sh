@@ -30,7 +30,7 @@ wait_run() {
       if [[ -f $m.log && ! -f $m.run ]]; then
         continue
       else
-        line_log=`tail -1 $m.log`
+        line_log=`tail -n -1 $m.log`
         echo "line log belong to: $line_log"
         is_ok=1
         break
