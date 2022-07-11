@@ -22,12 +22,12 @@ done
 
 create_tag() {
   echo "create $module run tag $module.run"
-  touch $module.run
+  touch $sourcepath/$module.run
 }
 
 delete_tag() {
   echo "delete $module run tag $module.run"
-  rm $module.run
+  rm $sourcepath/$module.run
 }
 
 run_compile() {
