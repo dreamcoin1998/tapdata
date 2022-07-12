@@ -171,7 +171,7 @@ def test_merge_sync_multi_nesting():
     p4 = p1.merge(p2.merge(p3))
     p5 = p4.writeTo(sink_mysql)
     p5.start()
-    assert wait_scheduling(p5, except_status=('running', 'wait_run'))
+    assert wait_scheduling(p5, except_status=('running', 'wait_run', 'error'))
 
 
 def test_processor_sync():
