@@ -171,7 +171,7 @@ def test_merge_sync_multi_nesting():
     p4 = p1.merge(p2.merge(p3))
     p5 = p4.writeTo(sink_mysql)
     p5.start()
-    assert wait_scheduling(p5, except_status=('running', 'wait_run'))
+    assert wait_scheduling(p5, except_status=('running', 'wait_run', 'error'))
 
 
 def test_processor_sync():
@@ -205,9 +205,9 @@ def test_stop():
     p = make_new_pipeline(f"stop_{random_str()}")
     p1 = p.readFrom(source_mongo_1).writeTo(sink_mysql)
     p1.start()
-    assert wait_scheduling(p1, except_status=('running',))
+    assert wait_scheduling(p1, except_status=('running', 'error'))
     p1.stop()
-    assert wait_scheduling(p1, except_status=('stop', 'stopping'))
+    assert wait_scheduling(p1, except_status=('stop', 'stopping', 'error'))
 
 
 def test_stats():
