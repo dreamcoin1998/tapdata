@@ -10,11 +10,6 @@ env:
   REGISTRY: ghcr.io
   TEST_DATABASE: ${{ secrets.TEST_DATABASE }}
 
-
-env:
-  REGISTRY: ghcr.io
-  TEST_DATABASE: ${{ secrets.TEST_DATABASE }}
-
 jobs:
 
   Code-Style-Check:
