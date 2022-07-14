@@ -1,10 +1,15 @@
-name: Docker Image CI
+name: LDP Continuous Integration
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "release-v*.*.*", "develop-v*.*.0" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "release-v*.*.*", "develop-v*.*.0" ]
+
+env:
+  REGISTRY: ghcr.io
+  TEST_DATABASE: ${{ secrets.TEST_DATABASE }}
+
 
 env:
   REGISTRY: ghcr.io
@@ -12,10 +17,21 @@ env:
 
 jobs:
 
-  test:
-
+  Code-Style-Check:
     runs-on: ubuntu-latest
+    steps:
+      - name: check commit message
+        if: (!startsWith(github.event.head_commit.message, 'feat')) && 
+            (!startsWith(github.event.head_commit.message, 'fix')) &&
+            (!startsWith(github.event.head_commit.message, 'refactor')) &&
+            (!startsWith(github.event.head_commit.message, 'test')) &&
+            (!startsWith(github.event.head_commit.message, 'chore')) &&
+            (!startsWith(github.event.head_commit.message, 'Merge'))
+        run: echo ${{ github.event.head_commit.message }} exit 1
 
+  Integration-Testing:
+    runs-on: ubuntu-latest
+    needs: Code-Style-Check
     steps:
       - uses: actions/checkout@v3
       - name: Login to the github container registry
@@ -24,6 +40,13 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: get test history
+        uses: actions/checkout@v2
+        if: always()
+        continue-on-error: true
+        with:
+          ref: report-test
+          path: report-test
       - name: compile iengine modules
         run: |
           chmod u+x build/build.sh 
@@ -42,5 +65,27 @@ jobs:
       - name: run unittest
         run: ls -al
       - name: run integrate test
-        run: chmod u+x build/quick-test.sh && build/quick-test.sh
-             exit $?
+        env:
+          RUN_ID: ${{ github.run_id }}
+          RUN_NUMBER: ${{ github.run_number }}
+          RUN_SIGN: ${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt }}
+          BRANCH: ${{ github.ref }}
+        run: chmod u+x build/quick-test.sh && build/quick-test.sh && ls -al ./tapshell/test/report/integrate.html/
+
+      - name: update github page
+        id: gh_pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: report-test
+          publish_dir: gh_pages
+          keep_files: true
+      - name: print summary
+        if: ${{ steps.gh_pages.conclusion == 'success' }}
+        env:
+          RUN_SIGN: ${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt }}
+          BRANCH: ${{ github.ref }}
+        run: |
+          BRANCH_DIR=`echo $BRANCH | sed "s:/:-:g"`
+          echo "[Click to view test report](https://tapdata.github.io/tapdata/$BRANCH_DIR/$RUN_SIGN)" >> $GITHUB_STEP_SUMMARY
