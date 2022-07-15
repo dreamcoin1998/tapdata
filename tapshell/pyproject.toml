@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "tapshell"
+version = "0.1.0"
+description = "Client of tapdata daas."
+authors = ["Jerry <gaojunbin98@gmail.com>"]
+license = "Apache V2"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+asyncio = "^3.4.3"
+colorlog = "^5.0.1"
+requests = "^2.25.1"
+urllib3 = "^1.26.4"
+websockets = "^9.0.2"
+pymongo = "^4.1.1"
+javascripthon = "^0.11"
+jupyter = "^1.0.0"
+pytest = "^7.1.2"
+allure-pytest = "^2.9.45"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
