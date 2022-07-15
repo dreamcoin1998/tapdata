@@ -5,6 +5,7 @@ RUN apt-get install -y wget curl && \
     wget -qO /tmp/allure-"$ALLURE_VERSION".tgz https://github.com/allure-framework/allure2/releases/download/"$ALLURE_VERSION"/allure-"$ALLURE_VERSION".tgz && \
     tar -xf /tmp/allure-"$ALLURE_VERSION".tgz --directory=/opt/ && \
     ln -s /opt/allure-"$ALLURE_VERSION"/bin/allure /usr/bin/allure && \
+    echo "183.60.82.98 raw.githubusercontent.com" >> /etc/hosts && \
     curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
 
 COPY manager /tapdata/apps/manager
