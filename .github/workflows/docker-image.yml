@@ -11,11 +11,12 @@ on:
         description: "frontend branch"
         default: 'warning' 
         required: true
-        type: choice
-        options:
-        - info
-        - warning
-        - debug 
+        type: string
+      tapdata_opensource_branch:
+        description: "tapdata opensource branch"
+        default: 'warning' 
+        required: true
+        type: string
 
 env:
   REGISTRY: ghcr.io
