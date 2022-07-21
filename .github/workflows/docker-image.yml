@@ -5,6 +5,17 @@ on:
     branches: [ "master", "release-v*.*.*", "develop-v*.*.0" ]
   pull_request:
     branches: [ "master", "release-v*.*.*", "develop-v*.*.0" ]
+  workflow_dispatch:
+    inputs:
+      frontbranch:
+        description: "frontend branch"
+        default: 'warning' 
+        required: true
+        type: choice
+        options:
+        - info
+        - warning
+        - debug 
 
 env:
   REGISTRY: ghcr.io
