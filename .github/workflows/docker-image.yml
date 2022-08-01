@@ -100,7 +100,7 @@ jobs:
           BRANCH_DIR=`echo $BRANCH | sed "s:/:-:g"`
           echo "[Click to view test report](https://tapdata.github.io/tapdata/$BRANCH_DIR/$RUN_SIGN)" >> $GITHUB_STEP_SUMMARY
       - name: send notices to feishu
-        if : always()
+        if : ${{ failure() }}
         run: |
           pip3 install requests GitPython
           python3 build/feishu_notice.py \
