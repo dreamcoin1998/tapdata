@@ -21,6 +21,9 @@ on:
 env:
   REGISTRY: ghcr.io
   TEST_DATABASE: ${{ secrets.TEST_DATABASE }}
+  FEISHU_BOT_SECRET: ${{ secrets.FEISHU_BOT_SECRET }}
+  FEISHU_BOT_WEBHOOK: ${{ secrets.FEISHU_BOT_WEBHOOK }}
+  FEISHU_PERSON_IN_CHARGE: ${{ secrets.FEISHU_PERSON_IN_CHARGE }}
 
 jobs:
 
@@ -96,3 +99,16 @@ jobs:
         run: |
           BRANCH_DIR=`echo $BRANCH | sed "s:/:-:g"`
           echo "[Click to view test report](https://tapdata.github.io/tapdata/$BRANCH_DIR/$RUN_SIGN)" >> $GITHUB_STEP_SUMMARY
+      - name: send notices to feishu
+        if : always()
+        run: |
+          pip3 install requests GitPython
+          python3 build/feishu_notice.py \
+            --branch ${{ env.CURRENT_BRANCH}} \
+            --job "LDP Enterprise Continuous Integration" \
+            --secret ${{ env.FEISHU_BOT_SECRET }} \
+            --bot_webhook ${{ env.FEISHU_BOT_WEBHOOK }} \
+            --token ${{ secrets.GITHUB_TOKEN }} \
+            --job_id Build \
+            --person_in_charge ${{ secret.FEISHU_PERSON_IN_CHARGE }} \
+            --detail_message "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
