@@ -21,9 +21,6 @@ on:
 env:
   REGISTRY: ghcr.io
   TEST_DATABASE: ${{ secrets.TEST_DATABASE }}
-  FEISHU_BOT_SECRET: ${{ secrets.FEISHU_BOT_SECRET }}
-  FEISHU_BOT_WEBHOOK: ${{ secrets.FEISHU_BOT_WEBHOOK }}
-  FEISHU_PERSON_IN_CHARGE: ${{ secrets.FEISHU_PERSON_IN_CHARGE }}
 
 jobs:
 
