@@ -107,6 +107,6 @@ jobs:
             --bot_webhook ${{ env.FEISHU_BOT_WEBHOOK }} \
             --token ${{ secrets.GITHUB_TOKEN }} \
             --job_id Build \
-            --person_in_charge ${{ secret.FEISHU_PERSON_IN_CHARGE }} \
+            --person_in_charge ${{ secrets.FEISHU_PERSON_IN_CHARGE }} \
             --detail_message "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             
