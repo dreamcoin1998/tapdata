@@ -112,3 +112,4 @@ jobs:
             --job_id Build \
             --person_in_charge ${{ secret.FEISHU_PERSON_IN_CHARGE }} \
             --detail_message "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            
